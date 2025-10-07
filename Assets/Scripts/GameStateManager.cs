@@ -4,7 +4,8 @@ using UnityEngine;
 public enum GameState
 {
     TitleScreen,
-    Playing
+    Playing,
+    Menu
 }
 
 public class GameStateManager : MonoBehaviour
@@ -22,19 +23,27 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-
-
-    // private State m_currentState;
-
-    // void Awake() {
-    //     m_currentState = State.TitleScreen;
-    // }
-    //
     public void StartGame()
     {
         CurrentState = GameState.Playing;
-        Debug.Log("Game started!");
-        Debug.Log(CurrentState);
-        // m_currentState = State.Playing;
+        Debug.Log("GameStateManager: Game started!");
+    }
+
+    public static void ToggleMenu()
+    {
+        if (CurrentState == GameState.Menu)
+        {
+            CurrentState = GameState.Playing;
+        }
+        else
+        {
+            CurrentState = GameState.Menu;
+        }
+    }
+
+    public void EndGame()
+    {
+        CurrentState = GameState.TitleScreen;
+        Debug.Log("GameStateManager: Ended the game");
     }
 }

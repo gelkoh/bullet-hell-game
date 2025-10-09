@@ -9,10 +9,10 @@ public class Bar : MonoBehaviour
     {
         m_rectTransform = gameObject.GetComponent<RectTransform>();
         m_maxBarWidth = m_rectTransform.rect.width;
-        Player.OnHealthChanged += HandleHealthChanged;
+        Player.OnHealthChange += HandleHealthChange;
     }
 
-    void HandleHealthChanged(int remainingHealthPoints, int maximumHealthPoints)
+    void HandleHealthChange(int remainingHealthPoints, int maximumHealthPoints)
     {
         float remainingHealthPointsRatio = (float)remainingHealthPoints / maximumHealthPoints;
         float newWidth = m_maxBarWidth * remainingHealthPointsRatio;

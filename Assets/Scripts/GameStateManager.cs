@@ -10,6 +10,9 @@ public enum GameState
 
 public class GameStateManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject m_gameplayRoot;
+
     public static event Action<GameState> OnStateChange;
     private static GameState m_currentState;
 
@@ -27,6 +30,7 @@ public class GameStateManager : MonoBehaviour
     {
         CurrentState = GameState.Playing;
         Debug.Log("GameStateManager: Game started!");
+        m_gameplayRoot.SetActive(true);
     }
 
     public static void ToggleMenu()
@@ -45,5 +49,6 @@ public class GameStateManager : MonoBehaviour
     {
         CurrentState = GameState.TitleScreen;
         Debug.Log("GameStateManager: Ended the game");
+        m_gameplayRoot.SetActive(false);
     }
 }

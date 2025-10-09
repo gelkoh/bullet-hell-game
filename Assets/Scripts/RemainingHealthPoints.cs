@@ -9,10 +9,10 @@ public class RemainingHealthPoints : MonoBehaviour
     void Awake()
     {
         m_healthPointsText = gameObject.GetComponent<TMP_Text>();
-        Player.OnHealthChanged += HandleHealthChanged;
+        Player.OnHealthChange += HandleHealthChange;
     }
 
-    void HandleHealthChanged(int remainingHealthPoints, int maximumHealthPoints)
+    void HandleHealthChange(int remainingHealthPoints, int maximumHealthPoints)
     {
         m_healthPointsText.text = remainingHealthPoints.ToString();
     }

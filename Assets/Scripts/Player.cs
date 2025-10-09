@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     private int m_maximumHealthPoints = 100;
     private int m_remainingHealthPoints = 100;
 
-    public static event Action<int, int> OnHealthChanged;
+    public static event Action<int, int> OnHealthChange;
 
     public int MaximumHealthPoints
     {
@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
         private set
         {
             m_remainingHealthPoints = value;
-            OnHealthChanged?.Invoke(m_remainingHealthPoints, m_maximumHealthPoints);
+            OnHealthChange?.Invoke(m_remainingHealthPoints, m_maximumHealthPoints);
         }
     }
 

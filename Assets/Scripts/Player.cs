@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     private InputAction m_moveAction;
-    private InputAction m_lookAction;
 
     private Camera m_mainCamera;
     private Transform m_mainCameraTransform;
@@ -12,7 +11,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_moveAction = InputSystem.actions.FindAction("Player/Move");
-        m_lookAction = InputSystem.actions.FindAction("Player/Look");
 
         m_mainCamera = Camera.main;
         m_mainCameraTransform = m_mainCamera.GetComponent<Transform>();
@@ -32,5 +30,14 @@ public class Player : MonoBehaviour
 
         // Update camera position to track player position
         m_mainCameraTransform.position = new Vector3(newX, newY, -10);
+
+        Vector3 playerScreenPosition = m_mainCamera.WorldToScreenPoint(gameObject.transform.localPosition);
+        Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
+
+        float diffX = mouseScreenPosition.x - playerScreenPosition.x;
+        float diffY = mouseScreenPosition.y - playerScreenPosition.y;
+
+        float angle = -Mathf.Atan2(diffX, diffY) * Mathf.Rad2Deg + 90f;
+        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 }

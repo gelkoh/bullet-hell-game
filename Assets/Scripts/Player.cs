@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,12 +9,39 @@ public class Player : MonoBehaviour
     private Camera m_mainCamera;
     private Transform m_mainCameraTransform;
 
+    private int m_maximumHealthPoints = 100;
+    private int m_remainingHealthPoints = 100;
+
+    public static event Action<int, int> OnHealthChanged;
+
+    public int MaximumHealthPoints
+    {
+        get => m_maximumHealthPoints;
+        private set
+        {
+            m_maximumHealthPoints = value;
+        }
+    }
+
+    public int RemainingHealthPoints
+    {
+        get => m_remainingHealthPoints; 
+        private set
+        {
+            m_remainingHealthPoints = value;
+            OnHealthChanged?.Invoke(m_remainingHealthPoints, m_maximumHealthPoints);
+        }
+    }
+
     void Start()
     {
         m_moveAction = InputSystem.actions.FindAction("Player/Move");
 
         m_mainCamera = Camera.main;
         m_mainCameraTransform = m_mainCamera.GetComponent<Transform>();
+
+        // Test the health bar
+        RemainingHealthPoints = 75;
     }
 
     void Update()

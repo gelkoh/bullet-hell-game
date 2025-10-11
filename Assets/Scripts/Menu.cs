@@ -33,12 +33,14 @@ public class Menu : MonoBehaviour
             m_canvasGroup.alpha = 1;
             m_canvasGroup.interactable = true;
             m_canvasGroup.blocksRaycasts = true;
+            Time.timeScale = 0;
         }
         else
         {
             m_canvasGroup.alpha = 0;
             m_canvasGroup.interactable = false;
             m_canvasGroup.blocksRaycasts = false;
+            Time.timeScale = 1;
         }
     }
 }

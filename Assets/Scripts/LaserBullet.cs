@@ -19,6 +19,12 @@ public class LaserBullet : MonoBehaviour, IProjectile
     public void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Projectile collision with " + other.gameObject);
+
+        if (other.gameObject.GetComponent<Enemy>() != null)
+        {
+            other.gameObject.GetComponent<Enemy>().TakeDamage(10);
+        }
+
         Destroy(gameObject);
     }
 }

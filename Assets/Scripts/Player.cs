@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance { get; private set; }
+
     private InputAction m_moveAction;
     private InputAction m_attackAction;
 
@@ -41,6 +43,15 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         m_rigidBody2d = gameObject.GetComponent<Rigidbody2D>();
         
         m_moveAction = InputSystem.actions.FindAction("Player/Move");

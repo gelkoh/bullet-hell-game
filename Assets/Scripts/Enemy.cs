@@ -2,9 +2,14 @@ using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
+    private FloatingHealthBar m_floatingHealthBar;
     private int m_currentHealth = 100;
     private int m_maximumHealth = 100;
-    public static event Action<int, int> OnDamageTaken;
+
+    void Awake()
+    {
+        m_floatingHealthBar = GetComponentInChildren<FloatingHealthBar>();
+    }
 
     public void TakeDamage(int damage)
     {
@@ -17,7 +22,7 @@ public class Enemy : MonoBehaviour {
         }
         else
         {
-            OnDamageTaken?.Invoke(m_currentHealth, m_maximumHealth);
+            m_floatingHealthBar.UpdateHealth(m_currentHealth, m_maximumHealth);
             Debug.Log("Enemy: Taken damage");
         }
     }

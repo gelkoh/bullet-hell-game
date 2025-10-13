@@ -8,12 +8,10 @@ public class FloatingHealthBar : MonoBehaviour
     void Awake()
     {
         m_slider = gameObject.GetComponent<Slider>();
-        Enemy.OnDamageTaken += HandleDamageTaken;
     }
 
-    void HandleDamageTaken(int remainingHealthPoints, int maximumHealthPoints)
+    public void UpdateHealth(int currentHealth, int maximumHealth)
     {
-        Debug.Log("FloatingHealthBar: Handling damage taken.");
-        m_slider.value = (float)remainingHealthPoints / maximumHealthPoints;
+        m_slider.value = (float)currentHealth / maximumHealth;
     }
 }

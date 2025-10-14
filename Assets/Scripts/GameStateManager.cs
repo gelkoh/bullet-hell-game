@@ -29,7 +29,7 @@ public class GameStateManager : MonoBehaviour
     public void StartGame()
     {
         CurrentState = GameState.Playing;
-        Debug.Log("GameStateManager: Game started!");
+        Debug.Log(gameObject.name + ": Game started");
         m_gameplayRoot.SetActive(true);
     }
 
@@ -48,7 +48,7 @@ public class GameStateManager : MonoBehaviour
     public void EndGame()
     {
         CurrentState = GameState.TitleScreen;
-        Debug.Log("GameStateManager: Ended the game");
+        Debug.Log(gameObject.name + ": Game ended");
         m_gameplayRoot.SetActive(false);
     }
 }

@@ -22,9 +22,6 @@ public class SpawnManager : MonoBehaviour
         float minimumSpawnDistance = differenceVector.magnitude + 1f;
         float maximumSpawnDistance = differenceVector.magnitude + 5f;
         
-        Debug.Log("SpawnManager: Minimum spawn distance from player is: " + minimumSpawnDistance);
-        Debug.Log("SpawnManager: Maximum spawn distance from player is: " + maximumSpawnDistance);
-
         for (int i = 0; i < 10; i++)
         {
             int randomNumber = Random.Range(0, 359);

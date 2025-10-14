@@ -21,7 +21,7 @@ public class Menu : MonoBehaviour
         if (GameStateManager.CurrentState == GameState.Playing || 
             GameStateManager.CurrentState == GameState.Menu)
         {
-            Debug.Log("Menu: Toggling Menu");
+            Debug.Log(gameObject.name + ": Menu toggled");
             GameStateManager.ToggleMenu();
         }
     }

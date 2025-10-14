@@ -18,12 +18,11 @@ public class Enemy : MonoBehaviour {
         if (m_currentHealth <= 0)
         {
             Destroy(gameObject);
-            Debug.Log("Enemy: Enemy was killed!");
         }
         else
         {
             m_floatingHealthBar.UpdateHealth(m_currentHealth, m_maximumHealth);
-            Debug.Log("Enemy: Taken damage");
+            Debug.Log(gameObject.name + ": Enemy took damage", gameObject);
         }
     }
 }

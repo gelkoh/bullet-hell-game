@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         }
 
         m_rigidBody2d = gameObject.GetComponent<Rigidbody2D>();
-        
+
         m_moveAction = InputSystem.actions.FindAction("Player/Move");
         m_attackAction = InputSystem.actions.FindAction("Player/Attack");
 

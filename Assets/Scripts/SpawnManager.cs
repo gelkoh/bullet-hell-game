@@ -17,10 +17,10 @@ public class SpawnManager : MonoBehaviour
         Vector3 playerPosition = Player.Instance.transform.position;
         float zDistanceToCamera = Mathf.Abs(m_mainCamera.transform.position.z - playerPosition.z);
         Vector3 bottomLeft = m_mainCamera.ScreenToWorldPoint(new Vector3(0, 0, zDistanceToCamera));
-        Vector3 differenceVector = bottomLeft - playerPosition;
+        float distanceToScreenCorner = Vector3.Distance(playerPosition, bottomLeft);
         
-        float minimumSpawnDistance = differenceVector.magnitude + 1f;
-        float maximumSpawnDistance = differenceVector.magnitude + 5f;
+        float minimumSpawnDistance = distanceToScreenCorner + 1f;
+        float maximumSpawnDistance = distanceToScreenCorner + 5f;
         
         for (int i = 0; i < 10; i++)
         {

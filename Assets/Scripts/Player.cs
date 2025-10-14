@@ -79,7 +79,6 @@ public class Player : MonoBehaviour
         float currentX = gameObject.transform.localPosition.x;
         float currentY = gameObject.transform.localPosition.y;
 
-        // Multiply position by time scale so player movement stops while in menu/while pausing
         float newX = currentX += moveValue.x * m_playerSpeed * Time.deltaTime;
         float newY = currentY += moveValue.y * m_playerSpeed * Time.deltaTime;
 

@@ -113,6 +113,8 @@ public class Player : MonoBehaviour
         Vector2 normalizedBulletDirection = bulletDirection.normalized;
 
         laserBullet.Launch(normalizedBulletDirection, 1000);
+        
+        AudioManager.Instance.PlayLaserShot();
     }
 
     void HandleAttackAction(InputAction.CallbackContext context)

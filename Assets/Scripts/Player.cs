@@ -6,6 +6,9 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
 
+    [SerializeField]
+    private float m_playerSpeed;
+
     private InputAction m_moveAction;
     private InputAction m_attackAction;
 
@@ -77,8 +80,8 @@ public class Player : MonoBehaviour
         float currentY = gameObject.transform.localPosition.y;
 
         // Multiply position by time scale so player movement stops while in menu/while pausing
-        float newX = currentX += moveValue.x * 0.01f * Time.timeScale;
-        float newY = currentY += moveValue.y * 0.01f * Time.timeScale;
+        float newX = currentX += moveValue.x * m_playerSpeed * Time.deltaTime;
+        float newY = currentY += moveValue.y * m_playerSpeed * Time.deltaTime;
 
         gameObject.transform.localPosition = new Vector3(newX, newY, 0);
 

@@ -1800,6 +1800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 563e15070d6f6eaa39ff0c9e5b918fbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  m_playerSpeed: 6
   m_laserBulletPrefab: {fileID: 1217436308531642829, guid: 01b87b3f9c8fac04b85d7ed9f56b396f, type: 3}
 --- !u!50 &627928147
 Rigidbody2D:

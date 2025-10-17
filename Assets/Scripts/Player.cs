@@ -119,6 +119,9 @@ public class Player : MonoBehaviour
 
     void HandleAttackAction(InputAction.CallbackContext context)
     {
-        Launch();
+        if (GameStateManager.CurrentState == GameState.Playing)
+        {
+            Launch();
+        }
     }
 }

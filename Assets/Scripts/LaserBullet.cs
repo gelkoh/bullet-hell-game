@@ -20,9 +20,9 @@ public class LaserBullet : MonoBehaviour, IProjectile
     {
         Debug.Log(gameObject.name + ": LaserBullet collided with " + other.gameObject.name, other.gameObject);
 
-        if (other.gameObject.GetComponent<Enemy>() != null)
+        if (other.gameObject.GetComponentInParent<Enemy>() != null)
         {
-            other.gameObject.GetComponent<Enemy>().TakeDamage(10);
+            other.gameObject.GetComponentInParent<Enemy>().TakeDamage(10);
         }
 
         Destroy(gameObject);

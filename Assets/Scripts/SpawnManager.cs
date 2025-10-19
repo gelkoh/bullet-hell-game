@@ -8,6 +8,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject m_enemyPrefab;
 
+    private float m_spawnRate = 1f;
+
     void Awake()
     {
         m_mainCamera = Camera.main;
@@ -15,16 +17,17 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnRoutine(1));
+        StartCoroutine(SpawnRoutine());
+        StartCoroutine(DifficultyScaler());
     }
 
-    private IEnumerator SpawnRoutine(float waitTime)
+    private IEnumerator SpawnRoutine()
     {
         // TODO: Fix enemies spawning inside each other
 
         while (true)
         {
-            yield return new WaitForSeconds(waitTime);
+            yield return new WaitForSeconds(m_spawnRate);
 
             Vector3 playerPosition = Player.Instance.transform.position;
             float zDistanceToCamera = Mathf.Abs(m_mainCamera.transform.position.z - playerPosition.z);
@@ -43,6 +46,16 @@ public class SpawnManager : MonoBehaviour
             Vector2 finalSpawnPosition = new Vector2(playerPosition.x, playerPosition.y) + scaledDirection;
 
             Instantiate(m_enemyPrefab, finalSpawnPosition, Quaternion.identity, transform.parent);
+        }
+    }
+
+    private IEnumerator DifficultyScaler()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(10);
+
+            m_spawnRate = m_spawnRate - m_spawnRate * 0.1f;
         }
     }
 }

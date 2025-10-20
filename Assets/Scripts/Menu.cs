@@ -11,9 +11,18 @@ public class Menu : MonoBehaviour
         m_canvasGroup = GetComponent<CanvasGroup>();
 
         m_menuAction = InputSystem.actions.FindAction("UI/Menu");
-        m_menuAction.performed += ToggleMenu;
+    }
 
+    void OnEnable()
+    {
+        m_menuAction.performed += ToggleMenu;
         GameStateManager.OnStateChange += HandleStateChange;
+    }
+
+    void OnDisable()
+    {
+        m_menuAction.performed -= ToggleMenu;
+        GameStateManager.OnStateChange -= HandleStateChange;
     }
 
     void ToggleMenu(InputAction.CallbackContext context)

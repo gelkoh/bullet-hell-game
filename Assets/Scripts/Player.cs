@@ -60,10 +60,14 @@ public class Player : MonoBehaviour
         m_moveAction = InputSystem.actions.FindAction("Player/Move");
         m_attackAction = InputSystem.actions.FindAction("Player/Attack");
 
-        m_attackAction.performed += HandleAttackAction;
 
         m_mainCamera = Camera.main;
         m_mainCameraTransform = m_mainCamera.GetComponent<Transform>();
+    }
+
+    void OnEnable()
+    {
+        m_attackAction.performed += HandleAttackAction;
     }
 
     void Start()
@@ -115,6 +119,11 @@ public class Player : MonoBehaviour
         laserBullet.Launch(normalizedBulletDirection, 1000);
         
         AudioManager.Instance.PlayLaserShot();
+    }
+
+    void OnDisable()
+    {
+        m_attackAction.performed -= HandleAttackAction;
     }
 
     void HandleAttackAction(InputAction.CallbackContext context)

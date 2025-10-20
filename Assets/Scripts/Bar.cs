@@ -9,7 +9,16 @@ public class Bar : MonoBehaviour
     {
         m_rectTransform = gameObject.GetComponent<RectTransform>();
         m_maxBarWidth = m_rectTransform.rect.width;
+    }
+
+    void OnEnable()
+    {
         Player.OnHealthChange += HandleHealthChange;
+    }
+
+    void OnDisable()
+    {
+        Player.OnHealthChange -= HandleHealthChange;
     }
 
     void HandleHealthChange(int remainingHealthPoints, int maximumHealthPoints)

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -10,12 +11,11 @@ public enum GameState
 
 public class GameStateManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject m_gameplayRoot;
+    public static GameStateManager Instance { get; private set; }
 
     public static event Action<GameState> OnStateChange;
     private static GameState m_currentState;
-
+    
     public static GameState CurrentState
     {
         get => m_currentState;
@@ -26,11 +26,23 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    public void StartGame()
+    void Awake()
     {
+        if (Instance != null && Instance != this) 
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    public static void StartGame()
+    {
+        SceneManager.LoadScene("GameplayScene");
         CurrentState = GameState.Playing;
-        Debug.Log(gameObject.name + ": Game started");
-        m_gameplayRoot.SetActive(true);
     }
 
     public static void ToggleMenu()
@@ -45,10 +57,9 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    public void EndGame()
+    public static void EndGame()
     {
+        SceneManager.LoadScene("TitleScreenScene");
         CurrentState = GameState.TitleScreen;
-        Debug.Log(gameObject.name + ": Game ended");
-        m_gameplayRoot.SetActive(false);
     }
 }

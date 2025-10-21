@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     private Camera m_mainCamera;
     private Transform m_mainCameraTransform;
 
+    private Vector2 m_moveDirection;
+
     private int m_maximumHealthPoints = 100;
     private int m_remainingHealthPoints = 100;
 
@@ -78,18 +80,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Vector2 moveValue = m_moveAction.ReadValue<Vector2>();
+        m_moveDirection = m_moveAction.ReadValue<Vector2>();
 
-        float currentX = gameObject.transform.localPosition.x;
-        float currentY = gameObject.transform.localPosition.y;
-
-        float newX = currentX += moveValue.x * m_playerSpeed * Time.deltaTime;
-        float newY = currentY += moveValue.y * m_playerSpeed * Time.deltaTime;
-
-        gameObject.transform.localPosition = new Vector3(newX, newY, 0);
-
-        // Update camera position to track player position
-        m_mainCameraTransform.position = new Vector3(newX, newY, -10);
+        m_mainCameraTransform.position = new Vector3(transform.position.x, transform.position.y, m_mainCamera.transform.position.z);
 
         Vector3 playerScreenPosition = m_mainCamera.WorldToScreenPoint(gameObject.transform.localPosition);
         Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
@@ -99,6 +92,15 @@ public class Player : MonoBehaviour
 
         float angle = -Mathf.Atan2(diffX, diffY) * Mathf.Rad2Deg + 90f;
         gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
+    void FixedUpdate()
+    {
+        Vector2 currentPosition = m_rigidBody2d.position;
+
+        Vector2 targetPosition = currentPosition + m_moveDirection * m_playerSpeed * Time.fixedDeltaTime;
+
+        m_rigidBody2d.MovePosition(targetPosition);
     }
 
     private void Launch()
@@ -117,7 +119,7 @@ public class Player : MonoBehaviour
         Vector2 normalizedBulletDirection = bulletDirection.normalized;
 
         laserBullet.Launch(normalizedBulletDirection, 1000);
-        
+
         AudioManager.Instance.PlayLaserShot();
     }
 

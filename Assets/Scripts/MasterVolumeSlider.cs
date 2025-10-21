@@ -15,7 +15,10 @@ public class MasterVolumeSlider : MonoBehaviour
     void Awake()
     {
         m_slider = GetComponent<Slider>();
+    }
 
+    void Start()
+    {
         float linearVolume = PlayerPrefs.GetFloat(VOLUME_KEY, DEFAULT_VOLUME);
         m_slider.value = linearVolume;
 
@@ -28,6 +31,9 @@ public class MasterVolumeSlider : MonoBehaviour
         float decibels = Mathf.Log10(volume) * 20f;
 
         m_masterMixer.SetFloat("MasterVolume", decibels);
+
+        float exposedParam;
+        m_masterMixer.GetFloat("MasterVolume", out exposedParam);
 
         PlayerPrefs.SetFloat(VOLUME_KEY, volume);
         PlayerPrefs.Save();

@@ -4,7 +4,7 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     private TMP_Text m_timerText;
-    private float elapsedTime = 0f;
+    private float m_elapsedTime = 0f;
 
     void Awake()
     {
@@ -13,16 +13,11 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        elapsedTime += Time.deltaTime;
+        m_elapsedTime += Time.deltaTime;
 
-        if (elapsedTime > 1.0f)
-        {
-            elapsedTime = 0.0f;
+        int seconds = (int)m_elapsedTime % 60;
+        int minutes = (int)m_elapsedTime / 60;
 
-            int seconds = (int)Time.time % 60;
-            int minutes = (int)Time.time / 60;
-
-            m_timerText.SetText(string.Format("{0:00}:{1:00}", minutes, seconds));
-        }
+        m_timerText.SetText(string.Format("{0:00}:{1:00}", minutes, seconds));
     }
 }

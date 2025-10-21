@@ -6,4 +6,9 @@ public class UIManager : MonoBehaviour
     {
         GameStateManager.EndGame();
     }
+
+    public void OnResumeClicked()
+    {
+        GameStateManager.ResumeGame();
+    }
 }

@@ -57,6 +57,11 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
+    public static void ResumeGame()
+    {
+        CurrentState = GameState.Playing;
+    }
+
     public static void EndGame()
     {
         SceneManager.LoadScene("TitleScreenScene");

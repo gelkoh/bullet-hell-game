@@ -72,12 +72,6 @@ public class Player : MonoBehaviour
         m_attackAction.performed += HandleAttackAction;
     }
 
-    void Start()
-    {
-        // Test the health bar
-        RemainingHealthPoints = 75;
-    }
-
     void Update()
     {
         m_moveDirection = m_moveAction.ReadValue<Vector2>();
@@ -134,5 +128,10 @@ public class Player : MonoBehaviour
         {
             Launch();
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        RemainingHealthPoints -= damage;
     }
 }

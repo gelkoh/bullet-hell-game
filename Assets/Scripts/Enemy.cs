@@ -58,6 +58,7 @@ public class Enemy : MonoBehaviour {
     void LateUpdate()
     {
         m_floatingHealthBar.transform.position = m_enemyBody.position + m_healthBarOffset;
+        m_floatingHealthBar.transform.rotation = Quaternion.identity;
     }
 
     public void TakeDamage(int damage)

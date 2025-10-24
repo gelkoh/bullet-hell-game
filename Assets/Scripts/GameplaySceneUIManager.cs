@@ -11,4 +11,9 @@ public class UIManager : MonoBehaviour
     {
         GameStateManager.ResumeGame();
     }
+
+    public void OnQuitClicked()
+    {
+        Application.Quit();
+    }
 }

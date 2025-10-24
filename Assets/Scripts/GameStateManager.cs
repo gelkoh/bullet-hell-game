@@ -67,4 +67,9 @@ public class GameStateManager : MonoBehaviour
         SceneManager.LoadScene("TitleScreenScene");
         CurrentState = GameState.TitleScreen;
     }
+
+    public static void QuitGame()
+    {
+        Application.Quit();
+    }
 }

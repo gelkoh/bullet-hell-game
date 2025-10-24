@@ -6,7 +6,8 @@ public enum GameState
 {
     TitleScreen,
     Playing,
-    Menu
+    Menu,
+    DeathScreen
 }
 
 public class GameStateManager : MonoBehaviour
@@ -26,6 +27,15 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
+    public static void SetState(GameState newState)
+    {
+        if (CurrentState == newState)
+            return;
+
+        CurrentState = newState;
+        OnStateChange?.Invoke(m_currentState);
+    }
+
     void Awake()
     {
         if (Instance != null && Instance != this) 
@@ -41,8 +51,12 @@ public class GameStateManager : MonoBehaviour
 
     public static void StartGame()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("GameplayScene");
         CurrentState = GameState.Playing;
+        
+        Debug.Log("CURRENT STATE: " + CurrentState);
+        Debug.Log("TIME SCALE IN START GAME: " + Time.timeScale);
     }
 
     public static void ToggleMenu()

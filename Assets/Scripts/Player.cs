@@ -133,5 +133,10 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         RemainingHealthPoints -= damage;
+
+        if (RemainingHealthPoints <= 0)
+        {
+            GameStateManager.SetState(GameState.DeathScreen);
+        }
     }
 }

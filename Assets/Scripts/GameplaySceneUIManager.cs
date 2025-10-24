@@ -16,4 +16,9 @@ public class UIManager : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void OnTryAgainClicked()
+    {
+        GameStateManager.StartGame();
+    }
 }

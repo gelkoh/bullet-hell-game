@@ -44,7 +44,7 @@ public class Menu : MonoBehaviour
             m_canvasGroup.blocksRaycasts = true;
             Time.timeScale = 0;
         }
-        else
+        else if (newGameState == GameState.Playing)
         {
             m_canvasGroup.alpha = 0;
             m_canvasGroup.interactable = false;

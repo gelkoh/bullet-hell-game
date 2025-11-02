@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Enemy : MonoBehaviour {
     [SerializeField]
@@ -19,6 +20,8 @@ public class Enemy : MonoBehaviour {
     private int m_maximumHealth = 100;
 
     private Vector3 m_healthBarOffset = new Vector3(0f, -0.5f, 0f);
+
+    public static event Action<int> OnEnemyKilled;
 
     void Awake()
     {
@@ -72,6 +75,7 @@ public class Enemy : MonoBehaviour {
 
         if (m_currentHealth <= 0)
         {
+            OnEnemyKilled?.Invoke(100);
             Destroy(gameObject);
         }
         else

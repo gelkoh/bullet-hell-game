@@ -20,7 +20,11 @@ public class Player : MonoBehaviour
     private int m_maximumHealthPoints = 100;
     private int m_remainingHealthPoints = 100;
 
+    private int m_score;
+    
     public static event Action<int, int> OnHealthChange;
+    public static event Action<int> OnScoreChange;
+    public static event Action<int> OnGameOver;
 
     public int MaximumHealthPoints
     {
@@ -70,6 +74,7 @@ public class Player : MonoBehaviour
     void OnEnable()
     {
         m_attackAction.performed += HandleAttackAction;
+        Enemy.OnEnemyKilled += HandleEnemyKilled;
     }
 
     void Update()
@@ -120,6 +125,7 @@ public class Player : MonoBehaviour
     void OnDisable()
     {
         m_attackAction.performed -= HandleAttackAction;
+        Enemy.OnEnemyKilled -= HandleEnemyKilled; 
     }
 
     void HandleAttackAction(InputAction.CallbackContext context)
@@ -137,6 +143,13 @@ public class Player : MonoBehaviour
         if (RemainingHealthPoints <= 0)
         {
             GameStateManager.SetState(GameState.DeathScreen);
+            OnGameOver?.Invoke(m_score);
         }
+    }
+    
+    private void HandleEnemyKilled(int points)
+    {
+        m_score += points;
+        OnScoreChange?.Invoke(m_score);
     }
 }

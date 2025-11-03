@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -13,9 +14,14 @@ public class SpawnManager : MonoBehaviour
     private Tilemap m_wallsTilemap;
 
     [SerializeField]
+    private GameObject m_enemiesParent;
+
+    [SerializeField]
     private GameObject m_enemyPrefab;
 
     private float m_spawnRate = 1f;
+
+    private List<GameObject> m_enemyGameObjects = new();
 
     void Awake()
     {
@@ -40,7 +46,8 @@ public class SpawnManager : MonoBehaviour
                 spawnPosition = GetRandomSpawnPosition();
             }
 
-            Instantiate(m_enemyPrefab, spawnPosition, Quaternion.identity, transform.parent);
+            GameObject enemy = Instantiate(m_enemyPrefab, spawnPosition, Quaternion.identity, m_enemiesParent.transform);
+            m_enemyGameObjects.Add(enemy);
         }
     }
 
@@ -81,6 +88,18 @@ public class SpawnManager : MonoBehaviour
         bool isInsideWall = m_wallsTilemap.GetTile(cell);
 
         if (!isInsideMap || isInsideWall) return false;
+
+        foreach (Transform enemyTransform in m_enemiesParent.transform)
+        {
+            if (position.x >= enemyTransform.position.x - 1f &&
+                position.x <= enemyTransform.position.x + 1f &&
+                position.y >= enemyTransform.position.y - 1f &&
+                position.y <= enemyTransform.position.y + 1f)
+            {
+                Debug.Log("TOO CLOSE TO ANOTHER ENEMY");
+                return false;
+            }
+        }
 
         return true;
     }

@@ -49256,6 +49256,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35ab226239b247cba5683135e6facc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  m_groundTilemap: {fileID: 1457675838}
+  m_wallsTilemap: {fileID: 1545227477}
   m_enemyPrefab: {fileID: 8408309933157028630, guid: cdeaad69ff9da4e7fbf10025aba997e9, type: 3}
 --- !u!1 &1601861026
 GameObject:

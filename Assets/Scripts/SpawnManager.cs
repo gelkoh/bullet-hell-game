@@ -1,9 +1,16 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using System.Collections;
 
 public class SpawnManager : MonoBehaviour
 {
     private Camera m_mainCamera;
+
+    [SerializeField]
+    private Tilemap m_groundTilemap;
+
+    [SerializeField]
+    private Tilemap m_wallsTilemap;
 
     [SerializeField]
     private GameObject m_enemyPrefab;
@@ -23,29 +30,17 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnRoutine()
     {
-        // TODO: Fix enemies spawning inside each other
-
         while (true)
         {
             yield return new WaitForSeconds(m_spawnRate);
 
-            Vector3 playerPosition = Player.Instance.transform.position;
-            float zDistanceToCamera = Mathf.Abs(m_mainCamera.transform.position.z - playerPosition.z);
-            Vector3 bottomLeft = m_mainCamera.ScreenToWorldPoint(new Vector3(0, 0, zDistanceToCamera));
-            float distanceToScreenCorner = Vector3.Distance(playerPosition, bottomLeft);
+            Vector2 spawnPosition = GetRandomSpawnPosition();
 
-            float minimumSpawnDistance = distanceToScreenCorner + 1f;
-            float maximumSpawnDistance = distanceToScreenCorner + 5f;
+            while (!CanSpawnAt(spawnPosition)) {
+                spawnPosition = GetRandomSpawnPosition();
+            }
 
-            int randomNumber = Random.Range(0, 359);
-            Vector2 direction = new Vector2(Mathf.Cos(randomNumber), Mathf.Sin(randomNumber)).normalized;
-
-            float randomSpawnDistance = Random.Range(minimumSpawnDistance, maximumSpawnDistance);
-            Vector2 scaledDirection = direction * randomSpawnDistance;
-
-            Vector2 finalSpawnPosition = new Vector2(playerPosition.x, playerPosition.y) + scaledDirection;
-
-            Instantiate(m_enemyPrefab, finalSpawnPosition, Quaternion.identity, transform.parent);
+            Instantiate(m_enemyPrefab, spawnPosition, Quaternion.identity, transform.parent);
         }
     }
 
@@ -57,5 +52,36 @@ public class SpawnManager : MonoBehaviour
 
             m_spawnRate = m_spawnRate - m_spawnRate * 0.1f;
         }
+    }
+
+    private Vector2 GetRandomSpawnPosition()
+    {
+        Vector3 playerPosition = Player.Instance.transform.position;
+        float zDistanceToCamera = Mathf.Abs(m_mainCamera.transform.position.z - playerPosition.z);
+        Vector3 bottomLeft = m_mainCamera.ScreenToWorldPoint(new Vector3(0, 0, zDistanceToCamera));
+        float distanceToScreenCorner = Vector3.Distance(playerPosition, bottomLeft);
+
+        float minimumSpawnDistance = distanceToScreenCorner + 1f;
+        float maximumSpawnDistance = distanceToScreenCorner + 5f;
+
+        int randomNumber = Random.Range(0, 359);
+        Vector2 direction = new Vector2(Mathf.Cos(randomNumber), Mathf.Sin(randomNumber)).normalized;
+
+        float randomSpawnDistance = Random.Range(minimumSpawnDistance, maximumSpawnDistance);
+        Vector2 scaledDirection = direction * randomSpawnDistance;
+
+        return new Vector2(playerPosition.x, playerPosition.y) + scaledDirection;
+    }
+
+    private bool CanSpawnAt(Vector2 position)
+    {
+        Vector3Int cell = m_groundTilemap.WorldToCell(position);
+
+        bool isInsideMap = m_groundTilemap.GetTile(cell);
+        bool isInsideWall = m_wallsTilemap.GetTile(cell);
+
+        if (!isInsideMap || isInsideWall) return false;
+
+        return true;
     }
 }

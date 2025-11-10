@@ -17,10 +17,13 @@ public class LaserBullet : MonoBehaviour, IProjectile
         m_rigidBody2d.AddForce(direction * force);
     }
 
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        Destroy(gameObject);
+    }
+
     public void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(gameObject.name + ": LaserBullet collided with " + other.gameObject.name, other.gameObject);
-
         Enemy enemy = other.gameObject.GetComponentInParent<Enemy>();
 
         if (enemy != null)
@@ -30,16 +33,6 @@ public class LaserBullet : MonoBehaviour, IProjectile
             return;
         }
 
-        TilemapCollider2D tilemapCollider = other.gameObject.GetComponent<TilemapCollider2D>();
-
-        if (tilemapCollider != null)
-        {
-            Debug.Log(gameObject.name + ": LaserBullet collided with " + other.gameObject.name, other.gameObject);
-            Destroy(gameObject);
-            return;
-        }
-
-        // Destroy at any collision anyways
         Destroy(gameObject);
     } 
 }

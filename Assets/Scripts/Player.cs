@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     private int m_remainingHealthPoints = 100;
 
     private int m_score;
+    private float m_angle;
     
     public static event Action<int, int> OnHealthChange;
     public static event Action<int> OnScoreChange;
@@ -89,8 +90,8 @@ public class Player : MonoBehaviour
         float diffX = mouseScreenPosition.x - playerScreenPosition.x;
         float diffY = mouseScreenPosition.y - playerScreenPosition.y;
 
-        float angle = -Mathf.Atan2(diffX, diffY) * Mathf.Rad2Deg + 90f;
-        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        m_angle = -Mathf.Atan2(diffX, diffY) * Mathf.Rad2Deg + 90f;
+        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, m_angle));
     }
 
     void FixedUpdate()
@@ -116,6 +117,8 @@ public class Player : MonoBehaviour
 
         Vector2 bulletDirection = mouseWorldPosition2D - playerWorldPosition2D;
         Vector2 normalizedBulletDirection = bulletDirection.normalized;
+
+        laserBullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, m_angle + 90f));
 
         laserBullet.Launch(normalizedBulletDirection, 1000);
 

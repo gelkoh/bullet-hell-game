@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class LaserBullet : MonoBehaviour, IProjectile
 {
@@ -20,11 +21,25 @@ public class LaserBullet : MonoBehaviour, IProjectile
     {
         Debug.Log(gameObject.name + ": LaserBullet collided with " + other.gameObject.name, other.gameObject);
 
-        if (other.gameObject.GetComponentInParent<Enemy>() != null)
+        Enemy enemy = other.gameObject.GetComponentInParent<Enemy>();
+
+        if (enemy != null)
         {
-            other.gameObject.GetComponentInParent<Enemy>().TakeDamage(10);
+            enemy.TakeDamage(10);
+            Destroy(gameObject);
+            return;
         }
 
+        TilemapCollider2D tilemapCollider = other.gameObject.GetComponent<TilemapCollider2D>();
+
+        if (tilemapCollider != null)
+        {
+            Debug.Log(gameObject.name + ": LaserBullet collided with " + other.gameObject.name, other.gameObject);
+            Destroy(gameObject);
+            return;
+        }
+
+        // Destroy at any collision anyways
         Destroy(gameObject);
-    }
+    } 
 }

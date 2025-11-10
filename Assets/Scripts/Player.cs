@@ -105,7 +105,11 @@ public class Player : MonoBehaviour
 
     private void Launch()
     {
-        GameObject projectileObject = Instantiate(m_laserBulletPrefab, m_rigidBody2d.position + Vector2.up * 0.5f, Quaternion.identity);
+        Vector3 spawnPositionOffset = new Vector3(0.4f, -0.15f, 0f);
+        Vector3 spawnRotationOffset = transform.rotation * spawnPositionOffset;
+        Vector3 spawnPosition = transform.position + spawnRotationOffset;
+        
+        GameObject projectileObject = Instantiate(m_laserBulletPrefab, spawnPosition, Quaternion.Euler(new Vector3(0, 0, m_angle + 90f)));
 
         LaserBullet laserBullet = projectileObject.GetComponent<LaserBullet>();
 
@@ -117,8 +121,6 @@ public class Player : MonoBehaviour
 
         Vector2 bulletDirection = mouseWorldPosition2D - playerWorldPosition2D;
         Vector2 normalizedBulletDirection = bulletDirection.normalized;
-
-        laserBullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, m_angle + 90f));
 
         laserBullet.Launch(normalizedBulletDirection, 1000);
 

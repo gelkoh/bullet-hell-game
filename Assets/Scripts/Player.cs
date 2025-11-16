@@ -151,7 +151,19 @@ public class Player : MonoBehaviour
             OnGameOver?.Invoke(m_score);
         }
     }
-    
+
+    public void Heal(int health)
+    {
+        if (RemainingHealthPoints + health <= 100)
+        {
+            RemainingHealthPoints += health;
+        }
+        else
+        {
+            RemainingHealthPoints = 100;
+        }
+    }
+
     private void HandleEnemyKilled(int points)
     {
         m_score += points;

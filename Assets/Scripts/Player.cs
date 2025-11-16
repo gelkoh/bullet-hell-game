@@ -12,8 +12,14 @@ public class Player : MonoBehaviour
     private InputAction m_moveAction;
     private InputAction m_attackAction;
 
+    [SerializeField]
     private Camera m_mainCamera;
+
+    [SerializeField]
+    private Camera m_uiCamera;
+
     private Transform m_mainCameraTransform;
+    private Transform m_uiCameraTransform;
 
     private Vector2 m_moveDirection;
 
@@ -67,9 +73,8 @@ public class Player : MonoBehaviour
         m_moveAction = InputSystem.actions.FindAction("Player/Move");
         m_attackAction = InputSystem.actions.FindAction("Player/Attack");
 
-
-        m_mainCamera = Camera.main;
         m_mainCameraTransform = m_mainCamera.GetComponent<Transform>();
+        m_uiCameraTransform = m_uiCamera.GetComponent<Transform>();
     }
 
     void OnEnable()
@@ -81,17 +86,30 @@ public class Player : MonoBehaviour
     void Update()
     {
         m_moveDirection = m_moveAction.ReadValue<Vector2>();
+        Vector2 currentMousePosition = Mouse.current.position.ReadValue();
 
-        m_mainCameraTransform.position = new Vector3(transform.position.x, transform.position.y, m_mainCamera.transform.position.z);
+        const float Z_DISTANCE_FROM_CAMERA = 10f;
 
-        Vector3 playerScreenPosition = m_mainCamera.WorldToScreenPoint(gameObject.transform.localPosition);
-        Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
+        Vector3 mouseWorldPosition = m_uiCamera.ScreenToWorldPoint(new Vector3(
+            currentMousePosition.x,
+            currentMousePosition.y,
+            Z_DISTANCE_FROM_CAMERA
+        ));
 
-        float diffX = mouseScreenPosition.x - playerScreenPosition.x;
-        float diffY = mouseScreenPosition.y - playerScreenPosition.y;
+        Vector3 direction = mouseWorldPosition - transform.position;
 
-        m_angle = -Mathf.Atan2(diffX, diffY) * Mathf.Rad2Deg + 90f;
-        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, m_angle));
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
+    void LateUpdate()
+    {
+        m_mainCameraTransform.position = new Vector3(transform.position.x,
+                                                     transform.position.y,
+                                                     m_mainCameraTransform.position.z);
+        m_uiCameraTransform.position = new Vector3(transform.position.x,
+                                                     transform.position.y,
+                                                     m_uiCameraTransform.position.z);
     }
 
     void FixedUpdate()
@@ -114,7 +132,7 @@ public class Player : MonoBehaviour
         LaserBullet laserBullet = projectileObject.GetComponent<LaserBullet>();
 
         Vector2 currentMousePosition = Mouse.current.position.ReadValue();
-        Vector3 mouseWorldPosition = m_mainCamera.ScreenToWorldPoint(new Vector3(currentMousePosition.x, currentMousePosition.y, m_mainCamera.nearClipPlane));
+        Vector3 mouseWorldPosition = m_uiCamera.ScreenToWorldPoint(new Vector3(currentMousePosition.x, currentMousePosition.y, m_mainCamera.nearClipPlane));
 
         Vector2 mouseWorldPosition2D = mouseWorldPosition;
         Vector2 playerWorldPosition2D = gameObject.transform.localPosition;

@@ -33,6 +33,14 @@ public class Player : MonoBehaviour
     public static event Action<int> OnScoreChange;
     public static event Action<int> OnGameOver;
 
+    private Animator m_animator;
+
+    [SerializeField]
+    private Transform m_playerBodyTransform;
+
+    [SerializeField]
+    private Transform m_playerLegsTransform;
+
     public int MaximumHealthPoints
     {
         get => m_maximumHealthPoints;
@@ -75,6 +83,8 @@ public class Player : MonoBehaviour
 
         m_mainCameraTransform = m_mainCamera.GetComponent<Transform>();
         m_uiCameraTransform = m_uiCamera.GetComponent<Transform>();
+
+        m_animator = GetComponentInChildren<Animator>();
     }
 
     void OnEnable()
@@ -86,6 +96,20 @@ public class Player : MonoBehaviour
     void Update()
     {
         m_moveDirection = m_moveAction.ReadValue<Vector2>();
+
+        if (m_moveDirection.magnitude > 0) {
+            m_animator.SetBool("IsMoving", true);
+
+            float targetAngle = Mathf.Atan2(m_moveDirection.y, m_moveDirection.x) * Mathf.Rad2Deg;
+
+            m_playerLegsTransform.rotation = Quaternion.Euler(new Vector3(0, 0, targetAngle));
+        }
+        else
+        {
+            m_animator.SetBool("IsMoving", false);
+        }
+
+
         Vector2 currentMousePosition = Mouse.current.position.ReadValue();
 
         const float Z_DISTANCE_FROM_CAMERA = 10f;
@@ -99,7 +123,7 @@ public class Player : MonoBehaviour
         Vector3 direction = mouseWorldPosition - transform.position;
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        m_playerBodyTransform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
     void LateUpdate()
@@ -124,10 +148,11 @@ public class Player : MonoBehaviour
     private void Launch()
     {
         Vector3 spawnPositionOffset = new Vector3(0.4f, -0.15f, 0f);
-        Vector3 spawnRotationOffset = transform.rotation * spawnPositionOffset;
+
+        Vector3 spawnRotationOffset = m_playerBodyTransform.rotation * spawnPositionOffset;
         Vector3 spawnPosition = transform.position + spawnRotationOffset;
-        
-        GameObject projectileObject = Instantiate(m_laserBulletPrefab, spawnPosition, Quaternion.Euler(new Vector3(0, 0, m_angle + 90f)));
+
+        GameObject projectileObject = Instantiate(m_laserBulletPrefab, spawnPosition, m_playerBodyTransform.rotation);
 
         LaserBullet laserBullet = projectileObject.GetComponent<LaserBullet>();
 

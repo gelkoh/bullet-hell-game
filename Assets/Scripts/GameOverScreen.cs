@@ -40,7 +40,7 @@ public class GameOverScreen : MonoBehaviour
             return;
         }
 
-        HighScoreManager.AddScore("Ole", finalScore);
+        HighScoreManager.AddScore("Player", finalScore);
 
         var scores = HighScoreManager.GetHighScores();
         if (HighScoresText == null)
